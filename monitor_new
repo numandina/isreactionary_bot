@@ -32,7 +32,7 @@ suspicious_subs = ["mensrights", "theredpill", "coontown",
                    "greatapes", "whiterights"]
 
 # get newest 100 submissions on r@ and met@
-for submission in subreddit.get_new(limit=100):
+for submission in subreddit.get_new(limit=30):
 
     # if this is the first time the bot ever sees this submission
     if submission.id not in posts_scanned:
