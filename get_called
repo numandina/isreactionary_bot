@@ -29,7 +29,8 @@ with open("messages_seen.txt", "r") as f:
 for msg in r.get_mentions(limit=None):
 
     if msg.id not in posts_replied_to:
-
+              
+        posts_replied_to.append(msg.id)
         with open("messages_seen.txt", "w") as f:
             for post_id in posts_replied_to:
                 f.write(post_id + "\n")
