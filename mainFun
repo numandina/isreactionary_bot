@@ -195,7 +195,7 @@ class User:
                                                         my_comments[comment_counter].link_id[3:] + "/_/" + my_comments[comment_counter].id
                                                         
                                                         if comment_counter < 8:
-                                                                comment_no_n_link += ", [" + "{}".format(comment_counter) + "](" + \
+                                                                comment_no_n_link += ", [" + "{}".format(comment_counter + 1) + "](" + \
                                                                 permalink.replace("http://www.", "http://np.") + ")"
                                                         else:
                                                                 comment_no_n_link += ""
