@@ -230,7 +230,7 @@ class User:
                                                         permalink.replace("http://www.", "http://np.") + "))" + \
                                                         ", **combined score: " + "{}".format(score) + "**"
 
-                                        if tot_score > score_thresh:
+                                        if tot_score > self.score_thresh:
                                                 post_condition += 1
 
                 if global_counter > 0 and post_condition > 0:
