@@ -21,22 +21,33 @@ suspicious_subs = ["anarchism", "metanarchism", "anarchy101",
                    "greatapes", "whiterights", "anarcho_capitalism",
                    "kotakuinaction"]
 
+with open("messages_seen.txt", "r") as f:
+    posts_replied_to = f.read()
+    posts_replied_to = posts_replied_to.split("\n")
+    posts_replied_to = filter(None, posts_replied_to)
+
 for msg in r.get_mentions(limit=None):
 
-    msg.mark_as_read()
-    username = msg.body[msg.body.find("/u/isreactionary_bot") + 21:]
-    try:
-        user = User(username, r, suspicious_subs, -99999)
-        user.process_comments()
-        user.process_submitted()
+    if msg.id not in posts_replied_to:
 
-        info = user.get_monitoring_info()
+        with open("messages_seen.txt", "w") as f:
+            for post_id in posts_replied_to:
+                f.write(post_id + "\n")
 
-        if len(info) > 0:
-            info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
-            info.replace("http://www.", "http://np.")
-            info = info[:10000]
-            msg.upvote()
-            msg.reply(info)
-    except:
-        pass
+        msg.mark_as_read()
+        username = msg.body[msg.body.find("/u/isreactionary_bot") + 21:]
+        try:
+            user = User(username, r, suspicious_subs, -99999)
+            user.process_comments()
+            user.process_submitted()
+
+            info = user.get_monitoring_info()
+
+            if len(info) > 0:
+                info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
+                info.replace("http://www.", "http://np.")
+                info = info[:10000]
+                msg.upvote()
+                msg.reply(info)
+        except:
+            pass
