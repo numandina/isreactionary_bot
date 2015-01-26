@@ -189,7 +189,7 @@ class User:
                                                 comment_no_n_link = ""
                                                 
                                                 for comment_counter in range(1, len(my_comments)):
-                                                        score += mycom[comment_counter].score
+                                                        score += my_comments[comment_counter].score
 
                                                         permalink = "http://www.reddit.com/r/" + subreddit + "/comments/" + \
                                                         my_comments[comment_counter].link_id[3:] + "/_/" + my_comments[comment_counter].id
