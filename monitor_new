@@ -29,7 +29,7 @@ subreddit = r.get_subreddit('anarchism+metanarchism')
 
 # edit this to change subs being considered reactionary
 suspicious_subs = ["mensrights", "theredpill", "coontown",
-                   "greatapes", "whiterights"]
+                   "antipozi", "greatapes", "whiterights"]
 
 # get newest 100 submissions on r@ and met@
 for submission in subreddit.get_new(limit=30):
