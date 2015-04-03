@@ -19,7 +19,7 @@ r.login(reddit_username, reddit_password)
 suspicious_subs = ["anarchism", "metanarchism", "anarchy101",
                    "mensrights", "theredpill", "coontown",
                    "greatapes", "whiterights", "anarcho_capitalism",
-                   "kotakuinaction"]
+                   "antipozi", "kotakuinaction"]
 
 with open("messages_seen.txt", "r") as f:
     posts_replied_to = f.read()
