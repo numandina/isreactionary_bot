@@ -1,3 +1,4 @@
+
 import praw
 import pdb
 import re
@@ -25,27 +26,35 @@ with open("posts_scanned.txt", "r") as f:
 
 # change this to determine which subs the bot will monitor
 subreddit = r.get_subreddit('anarchism+metanarchism')
-#subreddit = r.get_subreddit('msf_testbest')
 
 # edit this to change subs being considered reactionary
+# subs that are automatically monitored
 suspicious_subs = ["mensrights", "theredpill", "coontown",
-                   "greatapes", "whiterights"]
+                   "greatapes", "whiterights", "protectandserve",
+                   "darkenlightenment", "gendercritical", "gender_critical",
+                   "fatpeoplehate", "fatlogic", "new_right",
+                   "nationalsocialism", "nazi", "european",
+                   "polistan", "antipoz", "monarchism",
+                   "hbd", "srssucks", "sjsucks", "pissbeuponhim",
+                   "sjwhate", "strugglefucking", "rapingwomen",
+                   "killingwomen", "beatingwomen2", "beatingcripples",
+                   "beatingniggers", "beatingtrannies", "trans_fags"]
 
-# get newest 100 submissions on r@ and met@
-for submission in subreddit.get_new(limit=30):
+# get newest 50 submissions on r@ and met@
+for submission in subreddit.get_new(limit=50):
 
     # if this is the first time the bot ever sees this submission
     if submission.id not in posts_scanned:
 
         # get username of submitter
         username = submission.author.name
-        
+
         user = User(username, r, suspicious_subs, 50)
         user.process_comments()
         user.process_submitted()
 
         info = user.get_monitoring_info()
-        
+
         if len(info) > 0:
             info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
             info.replace("http://www.", "http://np.")
