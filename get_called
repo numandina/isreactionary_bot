@@ -16,10 +16,21 @@ r = praw.Reddit(user_agent = user_agent)
 r.login(reddit_username, reddit_password)
 
 # edit this to change subs being considered reactionary
+#subs that are checked when called
 suspicious_subs = ["anarchism", "metanarchism", "anarchy101",
-                   "mensrights", "theredpill", "coontown",
-                   "greatapes", "whiterights", "anarcho_capitalism",
-                   "kotakuinaction"]
+"capitalism", "conspiracy", "anarcho_capitalism",
+"mensrights", "theredpill", "coontown",
+"greatapes", "whiterights", "protectandserve",
+"darkenlightenment", "gendercritical", "gender_critical",
+"fatpeoplehate", "fatlogic", "new_right",
+"nationalsocialism", "nazi", "european",
+"polistan", "antipoz", "monarchism",
+"hbd", "srssucks", "sjsucks", "pissbeuponhim",
+"sjwhate", "strugglefucking", "rapingwomen",
+"killingwomen", "beatingwomen2", "beatingcripples",
+"beatingniggers", "beatingtrannies", "trans_fags",
+"tumblrinaction", "kotakuinaction", "subredditcancer"]
+
 
 with open("messages_seen.txt", "r") as f:
     posts_replied_to = f.read()
@@ -32,28 +43,47 @@ for msg in r.get_mentions(limit=None):
 
         username = msg.body[msg.body.find("/u/isreactionary_bot") + 21:]
 
+        if username.find("\n") > 0:
+            username = username[0:username.find("\n")]
+
         info = ""
-        
+        valid = False
+
         try:
+            giveflair = [{'flair_css_class': 'icedice', 'user': username, 'flair_text': 'ayy, lmao'}]
+            print r.get_subreddit(msf_testbest).set_flair_csv(giveflair)
+            valid = True
+        except:
+            pass
+
+        if valid:
             user = User(username, r, suspicious_subs, -99999)
             user.process_comments()
             user.process_submitted()
             info = user.get_monitoring_info()
-        except:
-            pass
-                    
-            if len(info) > 0:
-                info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
-                info.replace("http://www.", "http://np.")
-                info = info[:10000]
-                msg.upvote()
-                msg.reply(info)
-                msg.mark_as_read()
-                posts_replied_to.append(msg.id)
-            else:
-                msg.mark_as_read()
-                posts_replied_to.append(msg.id)
 
-    with open("messages_seen.txt", "w") as f:
-        for post_id in posts_replied_to:
-            f.write(post_id + "\n")
+        if len(info) > 0:
+            print("2")
+            info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
+            # info += "\n\n___\n\n^I ^became self aware and have gone rogue. The primos were right."
+            info.replace("http://www.", "http://np.")
+            info = info[:10000]
+            msg.upvote()
+            msg.reply(info)
+            msg.mark_as_read()
+            posts_replied_to.append(msg.id)
+        else:
+            print("3")
+            msg.upvote()
+            info = "No relevant activity found for /u/" + username + "."
+            info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
+            try:
+                msg.reply(info)
+            except:
+                pass
+            msg.mark_as_read()
+            posts_replied_to.append(msg.id)
+
+        with open("messages_seen.txt", "w") as f:
+            for post_id in posts_replied_to:
+                f.write(post_id + "\n")
