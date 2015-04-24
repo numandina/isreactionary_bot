@@ -50,8 +50,8 @@ for msg in r.get_mentions(limit=None):
         valid = False
 
         try:
-            giveflair = [{'flair_css_class': 'icedice', 'user': username, 'flair_text': 'ayy, lmao'}]
-            print r.get_subreddit(msf_testbest).set_flair_csv(giveflair)
+            print username
+            r.get_redditor(username)
             valid = True
         except:
             pass
@@ -68,21 +68,32 @@ for msg in r.get_mentions(limit=None):
             # info += "\n\n___\n\n^I ^became self aware and have gone rogue. The primos were right."
             info.replace("http://www.", "http://np.")
             info = info[:10000]
-            msg.upvote()
-            msg.reply(info)
+
             msg.mark_as_read()
             posts_replied_to.append(msg.id)
+            try:
+                msg.upvote()
+                msg.reply(info)
+            except:
+                pass
         else:
             print("3")
-            msg.upvote()
+            try:
+                msg.upvote()
+            except:
+                pass
             info = "No relevant activity found for /u/" + username + "."
+
+            if not valid:
+                info = "Check the username or try again later."
+
             info += "\n\n___\n\n^I'm ^a ^bot. ^Only ^the ^past ^1,000 ^comments ^are ^fetched."
+            msg.mark_as_read()
+            posts_replied_to.append(msg.id)
             try:
                 msg.reply(info)
             except:
                 pass
-            msg.mark_as_read()
-            posts_replied_to.append(msg.id)
 
         with open("messages_seen.txt", "w") as f:
             for post_id in posts_replied_to:
